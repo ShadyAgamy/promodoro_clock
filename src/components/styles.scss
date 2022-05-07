@@ -1,0 +1,54 @@
+body {
+    background-color: #1E555C;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.promodoro_container {
+    max-width: 800px;
+    text-align: center;
+    color: white;
+}
+
+
+.clock_length_control {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    svg {
+        cursor: pointer;
+    }
+
+    .break_length {
+        text-align: center;
+    }
+
+    .length_control_container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        span {
+            margin: 0 10px;
+        }
+    }
+}
+
+.session_box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #13353A;
+    padding: 1rem;
+    border-radius: 10rem;
+    margin: 1rem 0;
+}
+
+.timerControl {
+    span {
+        margin: 0 10px;
+        cursor: pointer;
+    }
+}
