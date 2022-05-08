@@ -3,51 +3,96 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDown, faArrowUp, faPlay, faStop, faRotateLeft } from "@fortawesome/free-solid-svg-icons";
 import "./styles.scss";
 
+// formate one number to two digits formats e.g 1 => 01
+let formattedNumber = (number) =>
+  number.toLocaleString("en-US", {
+    minimumIntegerDigits: 2,
+    useGrouping: false,
+  });
+
 export default function App() {
-  const [breakLength, setBreakLength] = useState(5);
-  const [sessionLength, setSessionLength] = useState(25);
-  const [currentTime, setCurrentTime] = useState(sessionLength);
+  const [breakLength, setBreakLength] = useState(1);
+  const [breakMins, setBreakMins] = useState(breakLength);
+  const [breakSecs, setBreakSesc] = useState(0);
+  const [sessionLength, setSessionLength] = useState(1);
+  const [sessionMins, setSessionMins] = useState(sessionLength);
+  const [sessionSecs, setSessionSesc] = useState(0);
+
   const [startTimer, setStartTimer] = useState(false);
 
+  const [runBreak, setRunBreak] = useState(false);
   const unitDecreament = (unit, updateValue) => {
     unit === 1 ? updateValue(1) : updateValue(unit - 1);
   };
   const unitIncrement = (unit, updateValue) => {
     unit === 60 ? updateValue(60) : updateValue(unit + 1);
+    setSessionMins(unit);
   };
   const reset = () => {
     setBreakLength(5);
     setSessionLength(25);
   };
 
-  let mins = sessionLength;
-  let sec = "00";
+  useEffect(() => {
+    setSessionMins(sessionLength);
+    setSessionSesc(0);
+  }, [sessionLength]);
 
+  // Session timer 
   useEffect(() => {
     let timer;
     if (startTimer) {
-       timer = setInterval(() => {
-        if (sec == "00") {
-          mins = mins - 1;
-          sec = 59;
+      timer = setInterval(() => {
+        if (sessionMins === 0 && sessionSecs === 0) {
+          console.log("run")
+          if (!runBreak) {
+            setBreakMins(breakLength)
+            setBreakSesc(0);
+          }
+          setRunBreak(true)
+          clearInterval(timer);
         } else {
-          sec = sec - 1;
+          if (sessionSecs === 0) {
+            setSessionMins(sessionMins - 1);
+            setSessionSesc(59);
+          } else {
+            setSessionSesc(sessionSecs - 1);
+          }
         }
-        if (mins === 0 && sec == "00") {
-          clearTimeout(timer);
-        }
-        console.log({ mins });
-        console.log({ sec });
-        setCurrentTime(`${mins} : ${sec}`);
-      }, 1000);
-     
+      }, 200);
     } else {
       clearInterval(timer);
     }
     return () => {
       clearInterval(timer);
     };
-  }, [startTimer]);
+  }, [breakLength, sessionMins, sessionSecs, startTimer]);
+
+   // Break timer 
+  useEffect(() => {
+    let timer;
+    if (startTimer && runBreak) {
+      timer = setInterval(() => {
+        if (breakMins === 0 && breakSecs === 0) {
+          setSessionMins(sessionLength)
+          setSessionSesc(0);
+          setRunBreak(false)
+          clearInterval(timer);
+        } else {
+          if (breakSecs === 0) {
+            setBreakMins(breakMins - 1);
+            setBreakSesc(59);
+          } else {
+            setBreakSesc(breakSecs - 1);
+          }
+        }
+      }, 200);
+    }
+    return () => {
+      clearInterval(timer);
+    };
+  }, [breakMins, breakSecs, runBreak, sessionLength, startTimer])
+  
 
   return (
     <div className="promodoro_container">
@@ -80,7 +125,8 @@ export default function App() {
       </div>
       <div className="session_box">
         <h4 id="timer-label">Session</h4>
-        <span id="time-left">{currentTime}</span>
+        <span id="time-left">{`${formattedNumber(sessionMins)}:${formattedNumber(sessionSecs)}`}</span>
+        <span id="time-left">{`${formattedNumber(breakMins)}:${formattedNumber(breakSecs)}`}</span>
       </div>
       <div className="timerControl">
         <span id="start_stop" onClick={() => setStartTimer(!startTimer)}>
