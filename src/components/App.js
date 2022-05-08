@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDown, faArrowUp, faPlay, faStop, faRotateLeft } from "@fortawesome/free-solid-svg-icons";
 import "./styles.scss";
@@ -11,26 +11,36 @@ let formattedNumber = (number) =>
   });
 
 export default function App() {
-  const [breakLength, setBreakLength] = useState(1);
+  const [breakLength, setBreakLength] = useState(5);
   const [breakMins, setBreakMins] = useState(breakLength);
   const [breakSecs, setBreakSesc] = useState(0);
-  const [sessionLength, setSessionLength] = useState(1);
+  const [sessionLength, setSessionLength] = useState(25);
   const [sessionMins, setSessionMins] = useState(sessionLength);
   const [sessionSecs, setSessionSesc] = useState(0);
 
   const [startTimer, setStartTimer] = useState(false);
-
   const [runBreak, setRunBreak] = useState(false);
+
+  const audio = useRef(null);
+
   const unitDecreament = (unit, updateValue) => {
     unit === 1 ? updateValue(1) : updateValue(unit - 1);
   };
   const unitIncrement = (unit, updateValue) => {
     unit === 60 ? updateValue(60) : updateValue(unit + 1);
-    setSessionMins(unit);
   };
+
   const reset = () => {
     setBreakLength(5);
     setSessionLength(25);
+    setRunBreak(false);
+    setStartTimer(false);
+    setSessionMins(sessionLength);
+    setSessionSesc(0);
+    setBreakMins(breakLength);
+    setBreakSesc(0);
+    audio.current.pause();
+    audio.current.currentTime = 0;
   };
 
   useEffect(() => {
@@ -38,18 +48,25 @@ export default function App() {
     setSessionSesc(0);
   }, [sessionLength]);
 
-  // Session timer 
+  useEffect(() => {
+    setBreakMins(breakLength);
+    setBreakSesc(0);
+  }, [breakLength]);
+
+  // Session timer
   useEffect(() => {
     let timer;
     if (startTimer) {
       timer = setInterval(() => {
+        if (sessionMins === 0 && sessionSecs === 1) {
+          audio.current.play();
+        }
         if (sessionMins === 0 && sessionSecs === 0) {
-          console.log("run")
           if (!runBreak) {
-            setBreakMins(breakLength)
+            setBreakMins(breakLength);
             setBreakSesc(0);
           }
-          setRunBreak(true)
+          setRunBreak(true);
           clearInterval(timer);
         } else {
           if (sessionSecs === 0) {
@@ -59,7 +76,7 @@ export default function App() {
             setSessionSesc(sessionSecs - 1);
           }
         }
-      }, 200);
+      }, 1000);
     } else {
       clearInterval(timer);
     }
@@ -68,15 +85,18 @@ export default function App() {
     };
   }, [breakLength, sessionMins, sessionSecs, startTimer]);
 
-   // Break timer 
+  // Break timer
   useEffect(() => {
     let timer;
     if (startTimer && runBreak) {
       timer = setInterval(() => {
         if (breakMins === 0 && breakSecs === 0) {
-          setSessionMins(sessionLength)
+          audio.current.play();
+        }
+        if (breakMins === 0 && breakSecs === 0) {
+          setSessionMins(sessionLength);
           setSessionSesc(0);
-          setRunBreak(false)
+          setRunBreak(false);
           clearInterval(timer);
         } else {
           if (breakSecs === 0) {
@@ -86,16 +106,18 @@ export default function App() {
             setBreakSesc(breakSecs - 1);
           }
         }
-      }, 200);
+      }, 1000);
     }
     return () => {
       clearInterval(timer);
     };
-  }, [breakMins, breakSecs, runBreak, sessionLength, startTimer])
-  
+  }, [breakMins, breakSecs, runBreak, sessionLength, startTimer]);
 
   return (
     <div className="promodoro_container">
+      <audio id="beep" ref={audio}>
+        <source src="https://raw.githubusercontent.com/freeCodeCamp/cdn/master/build/testable-projects-fcc/audio/BeepSound.wav" type="audio/mpeg" />
+      </audio>
       <h2 className="title">promodoro technique clock</h2>
       <div className="clock_length_control">
         <div className="break_length">
@@ -124,9 +146,8 @@ export default function App() {
         </div>
       </div>
       <div className="session_box">
-        <h4 id="timer-label">Session</h4>
-        <span id="time-left">{`${formattedNumber(sessionMins)}:${formattedNumber(sessionSecs)}`}</span>
-        <span id="time-left">{`${formattedNumber(breakMins)}:${formattedNumber(breakSecs)}`}</span>
+        <h4 id="timer-label">{runBreak ? "Break" : "Session"}</h4>
+        <span id="time-left">{runBreak ? `${formattedNumber(breakMins)}:${formattedNumber(breakSecs)}` : `${formattedNumber(sessionMins)}:${formattedNumber(sessionSecs)}`}</span>
       </div>
       <div className="timerControl">
         <span id="start_stop" onClick={() => setStartTimer(!startTimer)}>
