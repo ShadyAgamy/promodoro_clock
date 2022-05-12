@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import Circular from "./circular";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -57,37 +56,29 @@ export default function App() {
     audio.current.currentTime = 0;
   };
 
-  console.log({ sessionMins });
-  console.log({ sessionSecs });
-  console.log({ secondsToCircularTimer });
-
-  // useEffect(() => {
-    
-  // }, [sessionLength]);
-
   // update session minutes and seconds when session length changes
   useEffect(() => {
     setSessionMins(sessionLength);
     setSessionSesc(0);
-    if(!runBreak) {
+    if (!runBreak) {
       setSecondsToCircularTimer(sessionLength * 60);
       setKey((prevKey) => prevKey + 1);
     }
   }, [sessionLength, runBreak]);
 
+  // update break minutes and seconds when session length changes
   useEffect(() => {
     setBreakMins(breakLength);
     setBreakSesc(0);
   }, [breakLength]);
 
+  // update circular progress time when break runs
   useEffect(() => {
     if (runBreak) {
       setSecondsToCircularTimer(breakLength * 60);
       setKey((prevKey) => prevKey + 1);
     }
-  
-  }, [breakLength, runBreak])
-  
+  }, [breakLength, runBreak]);
 
   // Session timer
   useEffect(() => {
@@ -149,80 +140,83 @@ export default function App() {
     };
   }, [breakMins, breakSecs, runBreak, sessionLength, startTimer]);
 
+  const remainingTimeToMinAndSec = (remainingTime) => {
+    const minutes = Math.floor(remainingTime / 60);
+    const seconds = remainingTime % 60;
+
+    return `${formattedNumber(minutes)}:${formattedNumber(seconds)}`;
+  };
+
   return (
-    <>
-      <div className="promodoro_container">
-        <audio id="beep" ref={audio}>
-          <source
-            src="https://raw.githubusercontent.com/freeCodeCamp/cdn/master/build/testable-projects-fcc/audio/BeepSound.wav"
-            type="audio/mpeg"
-          />
-        </audio>
-        <h2 className="title">promodoro technique clock</h2>
-        <div className="clock_length_control">
-          <div className="break_length">
-            <h4 id="break-label">Break Length</h4>
-            <div className="length_control_container">
-              <span
-                id="break-decrement"
-                onClick={() => unitDecreament(breakLength, setBreakLength)}
-              >
-                <FontAwesomeIcon icon={faArrowDown} />
-              </span>
-              <span id="break-length">{breakLength}</span>
-              <span id="break-increment" onClick={() => unitIncrement(breakLength, setBreakLength)}>
-                <FontAwesomeIcon icon={faArrowUp} />
-              </span>
-            </div>
-          </div>
-          <div className="session_length">
-            <h4 id="session-label">Session Length</h4>
-            <div className="length_control_container">
-              <span
-                id="session-decrement"
-                onClick={() => unitDecreament(sessionLength, setSessionLength)}
-              >
-                <FontAwesomeIcon icon={faArrowDown} />
-              </span>
-              <span id="session-length">{sessionLength}</span>
-              <span
-                id="session-increment"
-                onClick={() => unitIncrement(sessionLength, setSessionLength)}
-              >
-                <FontAwesomeIcon icon={faArrowUp} />
-              </span>
-            </div>
+    <div className="promodoro_container">
+      <audio id="beep" ref={audio}>
+        <source
+          src="https://raw.githubusercontent.com/freeCodeCamp/cdn/master/build/testable-projects-fcc/audio/BeepSound.wav"
+          type="audio/mpeg"
+        />
+      </audio>
+      <div className="clock_length_control">
+        <div className="break_length">
+          <h4 id="break-label">Break Length</h4>
+          <div className="length_control_container">
+            <span id="break-decrement" onClick={() => unitDecreament(breakLength, setBreakLength)}>
+              <FontAwesomeIcon icon={faArrowDown} />
+            </span>
+            <span id="break-length">{breakLength}</span>
+            <span id="break-increment" onClick={() => unitIncrement(breakLength, setBreakLength)}>
+              <FontAwesomeIcon icon={faArrowUp} />
+            </span>
           </div>
         </div>
-        <div className="session_box">
-          <h4 id="timer-label">{runBreak ? "Break" : "Session"}</h4>
-          <span id="time-left">
+        <div className="session_length">
+          <h4 id="session-label">Session Length</h4>
+          <div className="length_control_container">
+            <span
+              id="session-decrement"
+              onClick={() => unitDecreament(sessionLength, setSessionLength)}
+            >
+              <FontAwesomeIcon icon={faArrowDown} />
+            </span>
+            <span id="session-length">{sessionLength}</span>
+            <span
+              id="session-increment"
+              onClick={() => unitIncrement(sessionLength, setSessionLength)}
+            >
+              <FontAwesomeIcon icon={faArrowUp} />
+            </span>
+          </div>
+        </div>
+      </div>
+      <div className="session_box">
+        <h4 id="timer-label">{runBreak ? "Break" : "Session"}</h4>
+        <span id="time-left">
             {runBreak
               ? `${formattedNumber(breakMins)}:${formattedNumber(breakSecs)}`
               : `${formattedNumber(sessionMins)}:${formattedNumber(sessionSecs)}`}
           </span>
+        <div className="timeLeft">
           <CountdownCircleTimer
             key={key}
             isPlaying={startTimer}
             duration={secondsToCircularTimer}
-            colors={["#004777", "#F7B801", "#A30000", "#A30000"]}
-            colorsTime={[7, 5, 2, 0]}
+            colors={["#6FF3FA"]}
+            trailColor={"#1F2141"}
+            size={300}
+            strokeWidth={6}
           >
-            {({ remainingTime }) => remainingTime}
+            {({ remainingTime }) => remainingTimeToMinAndSec(remainingTime)}
           </CountdownCircleTimer>
         </div>
-        <div className="timerControl">
-          <span id="start_stop" onClick={() => setStartTimer(!startTimer)}>
-            <FontAwesomeIcon icon={faPlay} />
-            <FontAwesomeIcon icon={faStop} />
-          </span>
-          <span id="reset" onClick={reset}>
-            <FontAwesomeIcon icon={faRotateLeft} />
-          </span>
-        </div>
       </div>
-
-     
-    </>
+      <div className="timerControl">
+        <span id="start_stop" onClick={() => setStartTimer(!startTimer)}>
+          <FontAwesomeIcon icon={faPlay} />
+          <FontAwesomeIcon icon={faStop} />
+        </span>
+        <span id="reset" onClick={reset}>
+          <FontAwesomeIcon icon={faRotateLeft} />
+        </span>
+      </div>
+    </div>
   );
 }

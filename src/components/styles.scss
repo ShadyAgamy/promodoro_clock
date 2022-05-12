@@ -1,12 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;700&display=swap');
+
+* {
+    font-family: 'Montserrat', sans-serif;
+}
+
 body {
-    background-color: #1E555C;
+    background-color: #1F2141;
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-top: 6rem;
 }
 
 .promodoro_container {
     max-width: 800px;
+    min-width: 600px;
     text-align: center;
     color: white;
 }
@@ -16,6 +24,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    margin-bottom: 5rem;
 
     svg {
         cursor: pointer;
@@ -29,6 +38,7 @@ body {
         display: flex;
         align-items: center;
         justify-content: center;
+
         span {
             margin: 0 10px;
         }
@@ -40,7 +50,6 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    border: 2px solid #13353A;
     padding: 1rem;
     border-radius: 10rem;
     margin: 1rem 0;
@@ -50,5 +59,17 @@ body {
     span {
         margin: 0 10px;
         cursor: pointer;
+    }
+}
+
+.timeLeft {
+    border-radius: 50%;
+    border: 2rem solid #23264A;
+    box-shadow: 0px 3px 171px 9px rgba(39,42,82,0.72);
+    -webkit-box-shadow: 0px 3px 171px 9px rgba(39,42,82,0.72);
+    -moz-box-shadow: 0px 3px 171px 9px rgba(39,42,82,0.72);
+
+     div {
+        font-size: 2rem;
     }
 }
