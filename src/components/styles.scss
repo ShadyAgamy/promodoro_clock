@@ -16,6 +16,9 @@ body {
     min-width: 600px;
     text-align: center;
     color: white;
+    @media (max-width: 767px) {
+        min-width: 100%;
+    }
 }
 
 .clock_length_control {
@@ -23,6 +26,12 @@ body {
     align-items: center;
     justify-content: space-between;
     margin-bottom: 4rem;
+    @media (max-width: 767px) {
+        flex-direction: column-reverse;
+        .break_length {
+            margin-top: 1rem;
+        }
+    }
     svg {
         cursor: pointer;
     }
@@ -75,6 +84,9 @@ body {
 
 .timerControl {
     margin-top: -1rem;
+    @media (max-width: 767px) {
+        margin-bottom: 4rem;
+    }
     span {
         margin: 0 1rem;
         cursor: pointer;

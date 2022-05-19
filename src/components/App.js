@@ -191,11 +191,11 @@ export default function App() {
       </div>
       <div className="session_box">
         <h4 id="timer-label">{runBreak ? "Break time" : "Session time"}</h4>
-        <span >
+        {/* <span >
             {runBreak
               ? `${formattedNumber(breakMins)}:${formattedNumber(breakSecs)}`
               : `${formattedNumber(sessionMins)}:${formattedNumber(sessionSecs)}`}
-          </span>
+          </span> */}
         <div className="timeLeft">
           <CountdownCircleTimer
             key={key}
