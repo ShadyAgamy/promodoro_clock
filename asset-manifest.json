@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/promodoro_clock/static/css/main.c622ed09.chunk.css",
+    "main.css": "/promodoro_clock/static/css/main.6ef5e6ab.chunk.css",
     "main.js": "/promodoro_clock/static/js/main.2ce7fdcd.chunk.js",
     "main.js.map": "/promodoro_clock/static/js/main.2ce7fdcd.chunk.js.map",
     "runtime-main.js": "/promodoro_clock/static/js/runtime-main.70ea8620.js",
@@ -8,13 +8,13 @@
     "static/js/2.9e068162.chunk.js": "/promodoro_clock/static/js/2.9e068162.chunk.js",
     "static/js/2.9e068162.chunk.js.map": "/promodoro_clock/static/js/2.9e068162.chunk.js.map",
     "index.html": "/promodoro_clock/index.html",
-    "static/css/main.c622ed09.chunk.css.map": "/promodoro_clock/static/css/main.c622ed09.chunk.css.map",
+    "static/css/main.6ef5e6ab.chunk.css.map": "/promodoro_clock/static/css/main.6ef5e6ab.chunk.css.map",
     "static/js/2.9e068162.chunk.js.LICENSE.txt": "/promodoro_clock/static/js/2.9e068162.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.70ea8620.js",
     "static/js/2.9e068162.chunk.js",
-    "static/css/main.c622ed09.chunk.css",
+    "static/css/main.6ef5e6ab.chunk.css",
     "static/js/main.2ce7fdcd.chunk.js"
   ]
 }
