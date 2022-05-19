@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/promodoro_clock/static/css/main.c622ed09.chunk.css",
-    "main.js": "/promodoro_clock/static/js/main.d47e158b.chunk.js",
-    "main.js.map": "/promodoro_clock/static/js/main.d47e158b.chunk.js.map",
+    "main.js": "/promodoro_clock/static/js/main.2ce7fdcd.chunk.js",
+    "main.js.map": "/promodoro_clock/static/js/main.2ce7fdcd.chunk.js.map",
     "runtime-main.js": "/promodoro_clock/static/js/runtime-main.70ea8620.js",
     "runtime-main.js.map": "/promodoro_clock/static/js/runtime-main.70ea8620.js.map",
     "static/js/2.9e068162.chunk.js": "/promodoro_clock/static/js/2.9e068162.chunk.js",
@@ -15,6 +15,6 @@
     "static/js/runtime-main.70ea8620.js",
     "static/js/2.9e068162.chunk.js",
     "static/css/main.c622ed09.chunk.css",
-    "static/js/main.d47e158b.chunk.js"
+    "static/js/main.2ce7fdcd.chunk.js"
   ]
 }
