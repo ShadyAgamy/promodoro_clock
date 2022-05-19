@@ -2,8 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faArrowDown,
-  faArrowUp,
+  faArrowLeft,
+  faArrowRight,
   faPlay,
   faStop,
   faRotateLeft,
@@ -21,7 +21,7 @@ export default function App() {
   const [breakLength, setBreakLength] = useState(5);
   const [breakMins, setBreakMins] = useState(breakLength);
   const [breakSecs, setBreakSesc] = useState(0);
-  const [sessionLength, setSessionLength] = useState(2);
+  const [sessionLength, setSessionLength] = useState(25);
   const [sessionMins, setSessionMins] = useState(sessionLength);
   const [sessionSecs, setSessionSesc] = useState(0);
 
@@ -72,7 +72,7 @@ export default function App() {
     setBreakSesc(0);
   }, [breakLength]);
 
-  // update circular progress time when break runs
+  // update circular progress time when break starts
   useEffect(() => {
     if (runBreak) {
       setSecondsToCircularTimer(breakLength * 60);
@@ -143,9 +143,11 @@ export default function App() {
   const remainingTimeToMinAndSec = (remainingTime) => {
     const minutes = Math.floor(remainingTime / 60);
     const seconds = remainingTime % 60;
-
     return `${formattedNumber(minutes)}:${formattedNumber(seconds)}`;
   };
+
+
+  console.log({sessionSecs})
 
   return (
     <div className="promodoro_container">
@@ -160,11 +162,11 @@ export default function App() {
           <h4 id="break-label">Break Length</h4>
           <div className="length_control_container">
             <span id="break-decrement" onClick={() => unitDecreament(breakLength, setBreakLength)}>
-              <FontAwesomeIcon icon={faArrowDown} />
+              <FontAwesomeIcon icon={faArrowLeft} />
             </span>
             <span id="break-length">{breakLength}</span>
             <span id="break-increment" onClick={() => unitIncrement(breakLength, setBreakLength)}>
-              <FontAwesomeIcon icon={faArrowUp} />
+              <FontAwesomeIcon icon={faArrowRight} />
             </span>
           </div>
         </div>
@@ -175,21 +177,21 @@ export default function App() {
               id="session-decrement"
               onClick={() => unitDecreament(sessionLength, setSessionLength)}
             >
-              <FontAwesomeIcon icon={faArrowDown} />
+              <FontAwesomeIcon icon={faArrowLeft} />
             </span>
             <span id="session-length">{sessionLength}</span>
             <span
               id="session-increment"
               onClick={() => unitIncrement(sessionLength, setSessionLength)}
             >
-              <FontAwesomeIcon icon={faArrowUp} />
+              <FontAwesomeIcon icon={faArrowRight} />
             </span>
           </div>
         </div>
       </div>
       <div className="session_box">
-        <h4 id="timer-label">{runBreak ? "Break" : "Session"}</h4>
-        <span id="time-left">
+        <h4 id="timer-label">{runBreak ? "Break time" : "Session time"}</h4>
+        <span >
             {runBreak
               ? `${formattedNumber(breakMins)}:${formattedNumber(breakSecs)}`
               : `${formattedNumber(sessionMins)}:${formattedNumber(sessionSecs)}`}
